@@ -1,4 +1,4 @@
-
+/*
 let cantidadNotas = parseInt(prompt('Igresa la cantidad de notas para calcular el promedio'))
 let valorTotal = 0
 
@@ -10,3 +10,64 @@ for(let i = 1; i <= cantidadNotas; i++){
 let promedio = valorTotal / cantidadNotas
 
 alert(promedio)
+*/
+
+function crearNota(n) {
+    if (n > 5) {
+        alert('No puedes crear más de 5 notas al mismo tiempo');
+    } else {
+        for (let i = 0; i < n; i++) {
+            let titulo = prompt(`Título de la nota ${i + 1}`)
+            let descripcion = prompt(`Descripción de la nota ${i + 1}`)
+            alert(`Nota ${i + 1} creada correctamente: 
+Título: ${titulo} 
+Descripción: ${descripcion}`)
+        }
+    }
+    agregar()
+
+}
+
+function crearEvento(e) {
+    if (e > 5) {
+        alert('No puedes crear más de 5 eventos al mismo tiempo');
+    } else {
+        for (let i = 0; i < e; i++) {
+            let titulo = prompt(`Título del evento ${i + 1}`)
+            let descripcion = prompt(`Descripción del evento ${i + 1}`)
+            let fecha = prompt(`Fecha del evento ${i + 1}`)
+            alert(`Evento ${i + 1} creada correctamente: 
+Título: ${titulo} 
+Descripción: ${descripcion}
+Fecha: ${fecha}`)
+        }
+    }
+    agregar()
+}
+
+function agregar() {
+    do {
+        crear = parseInt(prompt(`¿Crear nota o evento?
+1 - Crear nota
+2 - Crear evento`))
+    } while (crear != 1 && crear != 2);
+
+    switch (crear) {
+        case 1:
+            let cantidadNotas = parseInt(prompt('¿cuantas notas quieres crear?'))
+            crearNota(cantidadNotas)
+            break;
+        case 2:
+            let cantidadEvento = parseInt(prompt('¿cuantos eventos quieres crear?'))
+            crearEvento(cantidadEvento)
+            break;
+        default:
+            break;
+    }
+}
+
+let crear = 0
+agregar()
+
+
+
