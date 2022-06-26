@@ -16,30 +16,51 @@ function crearNota(n) {
     if (n > 5) {
         alert('No puedes crear más de 5 notas al mismo tiempo');
     } else {
+        let arrayNotas = []
+
+        class Notas {
+            constructor(t, d) {
+                this.titulo = t
+                this.descripcion = d
+            }
+        }
+
         for (let i = 0; i < n; i++) {
             let titulo = prompt(`Título de la nota ${i + 1}`)
             let descripcion = prompt(`Descripción de la nota ${i + 1}`)
-            alert(`Nota ${i + 1} creada correctamente: 
-Título: ${titulo} 
-Descripción: ${descripcion}`)
-        }
+            const nota = new Notas(titulo, descripcion)
+            arrayNotas.push(nota)
+            console.log(`titulo:${arrayNotas[i].titulo}  
+Descripción:${arrayNotas[i].descripcion}`)
     }
     agregar()
 
+    }
 }
 
 function crearEvento(e) {
     if (e > 5) {
         alert('No puedes crear más de 5 eventos al mismo tiempo');
     } else {
+        let arrayEvento = []
+
+        class Eventos {
+            constructor(t, d, f) {
+                this.titulo = t
+                this.descripcion = d
+                this.fecha = f
+            }
+        }
+
         for (let i = 0; i < e; i++) {
             let titulo = prompt(`Título del evento ${i + 1}`)
             let descripcion = prompt(`Descripción del evento ${i + 1}`)
             let fecha = prompt(`Fecha del evento ${i + 1}`)
-            alert(`Evento ${i + 1} creada correctamente: 
-Título: ${titulo} 
-Descripción: ${descripcion}
-Fecha: ${fecha}`)
+            const evento = new Eventos(titulo, descripcion, fecha)
+            arrayEvento.push(evento)  
+            console.log(`titulo:${arrayEvento[i].titulo}  
+Descripción:${arrayEvento[i].descripcion}  
+Fecha:${arrayEvento[i].fecha}`)
         }
     }
     agregar()
@@ -68,6 +89,4 @@ function agregar() {
 
 let crear = 0
 agregar()
-
-
 
