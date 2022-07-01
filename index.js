@@ -16,7 +16,6 @@ function crearNota(n) {
     if (n > 5) {
         alert('No puedes crear más de 5 notas al mismo tiempo');
     } else {
-        let arrayNotas = []
 
         class Notas {
             constructor(t, d) {
@@ -33,17 +32,14 @@ function crearNota(n) {
             console.log(`titulo:${arrayNotas[i].titulo}  
 Descripción:${arrayNotas[i].descripcion}`)
     }
-    agregar()
-
     }
+    agregar()
 }
 
 function crearEvento(e) {
     if (e > 5) {
         alert('No puedes crear más de 5 eventos al mismo tiempo');
     } else {
-        let arrayEvento = []
-
         class Eventos {
             constructor(t, d, f) {
                 this.titulo = t
@@ -66,12 +62,44 @@ Fecha:${arrayEvento[i].fecha}`)
     agregar()
 }
 
+function buscador() {
+
+    if(arrayEvento.length != 0 || arrayNotas.length != 0){
+        let buscar = prompt('buscar una nota/evento por su título')
+        let resultado = []
+
+        let resultadoNotas = arrayNotas.filter(titulosBusqueda => titulosBusqueda.titulo == buscar) 
+        if(resultadoNotas.length != 0){
+            resultado.push(resultadoNotas)
+        }
+
+        let resultadoEventos = arrayEvento.filter(titulosBusqueda => titulosBusqueda.titulo == buscar) 
+        if(resultadoEventos.length != 0){
+            resultado.push(resultadoEventos)
+        }
+
+        if(resultado.length > 0){
+            resultado.forEach(e => {
+                e.forEach(e => console.log(e))
+            })    
+        }else{
+            alert(`No se encontro nada con ${buscar}`)
+        }
+    }else{
+        alert(`No tiene notas o eventos para buscar`)
+    }
+
+    agregar()
+}
+
 function agregar() {
     do {
         crear = parseInt(prompt(`¿Crear nota o evento?
 1 - Crear nota
-2 - Crear evento`))
-    } while (crear != 1 && crear != 2);
+2 - Crear evento
+3 - Buscar nota/evento
+4 - Salir`))
+    } while (crear != 1 && crear != 2 && crear != 3 && crear != 4);
 
     switch (crear) {
         case 1:
@@ -82,11 +110,18 @@ function agregar() {
             let cantidadEvento = parseInt(prompt('¿cuantos eventos quieres crear?'))
             crearEvento(cantidadEvento)
             break;
+        case 3:
+            buscador()
+            break;
         default:
             break;
     }
 }
 
-let crear = 0
-agregar()
 
+
+let crear = 0
+let arrayNotas = []
+let arrayEvento = []
+
+agregar()
