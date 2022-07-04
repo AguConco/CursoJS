@@ -31,7 +31,8 @@ function crearNota(n) {
             arrayNotas.push(nota)
             console.log(`titulo:${arrayNotas[i].titulo}  
 Descripción:${arrayNotas[i].descripcion}`)
-    }
+        }
+        mostrar(1)
     }
     agregar()
 }
@@ -58,6 +59,7 @@ function crearEvento(e) {
 Descripción:${arrayEvento[i].descripcion}  
 Fecha:${arrayEvento[i].fecha}`)
         }
+        mostrar(-1)
     }
     agregar()
 }
@@ -92,13 +94,42 @@ function buscador() {
     agregar()
 }
 
+function mostrar(e){
+    if(e == 1){
+        let contenedor = document.createElement('div')
+        contenedor.innerHTML = '<h1>Notas</h1>'
+        arrayNotas.forEach(e => {
+            contenedor.innerHTML += `
+            <div class="nota">
+                <h2>${e.titulo}</h2>
+                <p>${e.descripcion}</p>
+            </div>
+            `
+        })
+        BODY.append(contenedor)
+    }else if (e != 1){
+        let contenedor = document.createElement('div')
+        contenedor.innerHTML = '<h1>Eventos</h1>'
+        arrayEvento.forEach(e => {
+            contenedor.innerHTML += `
+            <div class="evento">
+                <h2>${e.titulo}</h2>
+                <p>${e.descripcion}</p>
+                <span class="horaEvento">${e.fecha}</span>
+            </div>
+            `
+        })
+        BODY.append(contenedor)
+    }
+}
+
 function agregar() {
     do {
         crear = parseInt(prompt(`¿Crear nota o evento?
 1 - Crear nota
 2 - Crear evento
 3 - Buscar nota/evento
-4 - Salir`))
+4 - Salir / ver notas y eventos`))
     } while (crear != 1 && crear != 2 && crear != 3 && crear != 4);
 
     switch (crear) {
@@ -113,15 +144,16 @@ function agregar() {
         case 3:
             buscador()
             break;
+        case 4: 
+            break;
         default:
             break;
     }
 }
 
-
-
 let crear = 0
 let arrayNotas = []
 let arrayEvento = []
+const BODY = document.querySelector('#bodyApp')
 
 agregar()
