@@ -10,7 +10,6 @@ const FORM_CREAR_EVENTO = document.querySelector('#formEvento')
 const CATEGORIA_EVENTO = document.querySelector('#categoriaEvento')
 const OPCIONES_SELECCIONAR = document.querySelector('#opcionesCategorias')
 
-
 const CONTENEDOR_NOTAS = document.createElement('div')
 const CONTENEDOR_EVENTOS = document.createElement('div')
 const NADA_CREADO = document.createElement('div')
@@ -29,28 +28,25 @@ CONTENEDOR_EVENTOS.id = 'contenedorEventos'
 NADA_CREADO.id = 'nadaCreado'
 
 mostrarNotas()
+mostrarEventos() 
 
-document.onkeydown = e =>{
-    if (e.altKey == true && e.keyCode == 78) {
+document.onkeydown = ({altKey,keyCode}) =>{
+    if (altKey == true && keyCode == 78) {
         window.location.href = "#crearNotaNueva"
-    } else if ( e.altKey == true && e.keyCode == 69) {
+    } else if (altKey == true && keyCode == 69) {
         window.location.href = "#crearEventoNuevo"
         return false
-    }else if(e.keyCode == 27){
+    }else if(keyCode == 27){
         window.location.href = "#"
     }
 
 }
-document.onclick = e => {
-    if(e.target.id == 'agregar'){
-        OPCIONES_AGREGAR.style.display = "block"
-    }else{
-        OPCIONES_AGREGAR.style.display = "none"
-    }
+document.onclick = ({target}) => {
+    target.id == 'agregar' ? OPCIONES_AGREGAR.style.display = "block": OPCIONES_AGREGAR.style.display = "none"
 }
 
-OPCIONES_SELECCIONAR.onclick = e =>{
-    CATEGORIA_EVENTO.value = e.target.value 
+OPCIONES_SELECCIONAR.onclick = ({target}) =>{
+    CATEGORIA_EVENTO.value = target.value 
     OPCIONES_SELECCIONAR.style.pointerEvents = 'none'
     setTimeout(() =>{
         OPCIONES_SELECCIONAR.style.pointerEvents = 'all'
@@ -66,17 +62,14 @@ FORM_CREAR_NOTA.onsubmit = e => {
         notificacion('La nota debe tener título o descripción')
     }else {
         let id = JSON.parse(localStorage.getItem('nota'))
-        if(id != null){
-            id = 'n'+id.length
-        }else{
-            id = 'n0'
-        }
+
+        id != null ? id = 'n'+id.length : id = 'n0'
+
         let datosNota = [tituloNota, descripcionNota,id]
         crearNota(datosNota)
-        document.querySelector('#formNota').reset()
-
+        FORM_CREAR_NOTA.reset()
         BTN_SECCION_NOTAS.onclick()
-        location.href = '#notas'
+        window.location.href = '#notas'
     }
     
 
@@ -96,11 +89,14 @@ FORM_CREAR_EVENTO.onsubmit = e => {
         ['Cumpleaños', '#40c100'],
         ['Estudios', '#1872fa']
     ]
-    categoriaEvento.forEach(e => {
+    for(let e of categoriaEvento){
         if(e[0] == CATEGORIA_EVENTO.value){
             categoriaEvento = e
+            break
+        }else{
+            categoriaEvento = [[]]
         }
-    }) 
+    }
 
     if(fechaEvento == '' || horaInicio == '' || horaFin == ''){
         notificacion('El evento debe tener fecha y hora de cuendo será')
@@ -109,17 +105,14 @@ FORM_CREAR_EVENTO.onsubmit = e => {
             tituloEvento = '(Sin título)'
         }
         let id = JSON.parse(localStorage.getItem('evento'))
-        if(id != null){
-            id = 'e'+id.length
-        }else{
-            id = 'e0'
-        }
+        
+        id != null ? id = 'e'+id.length : id = 'e0'
+
         let datosEvento = [tituloEvento,descripcionEvento,fechaEvento,horaInicio,horaFin,categoriaEvento,id]
         crearEvento(datosEvento)
-        document.querySelector('#formEvento').reset()
-        
+        FORM_CREAR_EVENTO.reset()
         BTN_SECCION_EVENTOS.onclick()
-        location.href = '#eventos'
+        window.location.href = '#eventos'
     }
 
 }
@@ -144,53 +137,54 @@ BTN_SECCION_NOTAS.onclick = () => {
 FORM_BUSCADOR.onsubmit = e => {
     e.preventDefault()
     let buscar = BUSCADOR.value.trim().toLowerCase()
-    if(buscar != ''){
-        buscador(buscar)
-    }else{
-        CONTENEDOR_RESULTADO.innerHTML = '<span>El resultado de la busqueda se verá ahí</span>'
-    }
+    buscar != '' ? buscador(buscar) : CONTENEDOR_RESULTADO.innerHTML = '<span>El resultado de la busqueda se verá ahí</span>'
 }
 BUSCADOR.onkeyup = () => {
     let buscar = BUSCADOR.value.trim().toLowerCase()
+    buscar != '' ? buscador(buscar) : CONTENEDOR_RESULTADO.innerHTML = '<span>El resultado de la busqueda se verá ahí</span>'
+}
 
-    if(buscar != ''){
-        buscador(buscar)
-    }else{
-        CONTENEDOR_RESULTADO.innerHTML = '<span>El resultado de la busqueda se verá ahí</span>'
+class Eventos {
+    constructor(datos) {
+        this.titulo = datos[0]
+        this.descripcion = datos[1]
+        this.fecha = datos[2]
+        this.horaInicio = datos[3]
+        this.horaFin = datos[4]
+        this.categoria = datos[5]
+        this.id = datos[6]
+    } 
+    eliminar(id){
+        let eventos = JSON.parse(localStorage.getItem('evento'))        
+        if(eventos != null){
+            for(let i = 0; i < eventos.length; i++){
+                if(id == e.id){
+                    eventos.splice(i,1)
+                    let eventosJson = JSON.stringify(eventos)
+                    localStorage.setItem('producto',eventosJson)
+                    mostrarEventos()
+                }
+            }
+        }
+    } 
+}
+class Notas {
+    constructor(datos) {
+        this.titulo = datos[0]
+        this.descripcion = datos[1]
+        this.id = datos[2]
     }
 }
 
 function crearNota(datosNota) {
-
-    class Notas {
-        constructor(datos) {
-            this.titulo = datos[0]
-            this.descripcion = datos[1]
-            this.id = datos[2]
-        }
-    }
-
     const nota = new Notas(datosNota)
     guardar(['nota',[nota]])
     notificacion('¡Nota creada con éxito!')
 }
 function crearEvento(datosEvento) {
-
-    class Eventos {
-        constructor(datos) {
-            this.titulo = datos[0]
-            this.descripcion = datos[1]
-            this.fecha = datos[2]
-            this.horaInicio = datos[3]
-            this.horaFin = datos[4]
-            this.categoria = datos[5]
-            this.id = datos[6]
-        }  
-    }
     const evento = new Eventos(datosEvento)
     guardar(['evento',[evento]])
     notificacion('¡Evento creado con éxito!')
-
 }
 function guardar(datosGuardar){
     let notaEventoJson = JSON.stringify(datosGuardar[1])
@@ -242,7 +236,6 @@ function mostrarNotas(){
 }
 function mostrarEventos(){
     eventos = JSON.parse(localStorage.getItem('evento')) || []
-
     CONTENEDOR_EVENTOS.innerHTML = ''
 
     if(eventos.length == 0){
@@ -276,25 +269,10 @@ function mostrarEventos(){
 }
 function buscador(datosBuscar){
     CONTENEDOR_RESULTADO.innerHTML = ''
-    let resultado = []
+    let titulosABuscar = [...notas,...eventos]
+    let resultado = titulosABuscar.filter(e => e.titulo.toLowerCase().includes(datosBuscar)) 
+    resultado.length > 0 ? resultado.forEach(e => {CONTENEDOR_RESULTADO.innerHTML += `<div class="resultadoBusqueda" id="${e.id}">${e.titulo}</div>`}) : CONTENEDOR_RESULTADO.innerHTML = `<span>No se encontró nada con "${datosBuscar}"</span>`
 
-    let resultadoNotas = notas.filter(e => e.titulo.toLowerCase().includes(datosBuscar)) 
-    if(resultadoNotas.length != 0){
-        resultado.push(resultadoNotas)
-    }
-
-    let resultadoEventos = eventos.filter(e => e.titulo.toLowerCase().includes(datosBuscar)) 
-    if(resultadoEventos.length != 0){
-        resultado.push(resultadoEventos)
-    }
-
-    if(resultado.length > 0){
-        resultado.forEach(e => {
-            e.forEach(e => CONTENEDOR_RESULTADO.innerHTML += `<div class="resultadoBusqueda" id="${e.id}">${e.titulo}</div>`)
-        })    
-    }else{
-        CONTENEDOR_RESULTADO.innerHTML = `<span>No se encontró nada con "${datosBuscar}"</span>`
-    }
 }
 function notificacion(notificar){
     const NOTIFICACION = document.querySelector('#notificacion')

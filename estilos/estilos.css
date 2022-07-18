@@ -590,8 +590,9 @@ nav ul li a:hover{
     border-radius: 50%;  
 }
 .eliminar i{
-    font-size: 12px;
+    font-size: 11px;
     color: var(--text-color);    
+    pointer-events: none
 }
 .eliminar span{
     position: absolute;
