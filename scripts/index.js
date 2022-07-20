@@ -283,7 +283,7 @@ function eliminar(eliminar){
         if(eventoNota != null){
             for(let i = 0; i < eventoNota.length; i++){
                 if(identificador == eventoNota[i].id){
-                    let tituloAEliminar = eventoNota[i].tituloclea
+                    let tituloAEliminar = eventoNota[i].titulo
                     eventoNota.splice(i,1)
                     let eventoNotaJson = JSON.stringify(eventoNota)
                     localStorage.setItem(guardados,eventoNotaJson)
