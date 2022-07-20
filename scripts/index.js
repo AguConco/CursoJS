@@ -273,17 +273,17 @@ function notificacion(notificar){
         span.remove()        
     } , 2500)
 }
-function eliminar(e){
-    e.onclick = () =>{
+function eliminar(eliminar){
+    eliminar.onclick = () =>{
         let guardados = ''
-        let identificador = e.parentNode.id
+        let identificador = eliminar.parentNode.id
         identificador.charAt(0) == 'e' ? guardados = 'evento' : guardados = 'nota'
 
         let eventoNota = JSON.parse(localStorage.getItem(guardados))        
         if(eventoNota != null){
             for(let i = 0; i < eventoNota.length; i++){
                 if(identificador == eventoNota[i].id){
-                    let tituloAEliminar = eventoNota[i].titulo
+                    let tituloAEliminar = eventoNota[i].tituloclea
                     eventoNota.splice(i,1)
                     let eventoNotaJson = JSON.stringify(eventoNota)
                     localStorage.setItem(guardados,eventoNotaJson)
