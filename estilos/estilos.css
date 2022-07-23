@@ -577,6 +577,7 @@ nav ul li a:hover{
     display: flex;
     flex-wrap: wrap;
     align-items: flex-start;
+    align-content: flex-start;
     flex: none;
     width: 100%;
 }
@@ -598,6 +599,7 @@ nav ul li a:hover{
     max-width: calc(100% - 25px);
     font-weight: 300;
     margin-bottom: 3px;
+    display: block;
 }
 .imgNota{
     overflow: hidden;
@@ -613,10 +615,27 @@ nav ul li a:hover{
 .nota p{
     font-size: 13px;
     display: -webkit-box;
-    -webkit-line-clamp: 6;
+    -webkit-line-clamp: 12;
     -webkit-box-orient: vertical;
     overflow: hidden;
-
+    max-width: calc(100% - 25px);
+}
+.notaFantasma{
+    border: 2px dashed #ddd;
+    background: transparent;
+}
+.notaFantasma h2, .notaFantasma p{
+    opacity: .5;
+}
+.notaSeleccionada{
+    transform: scale(.98);
+}
+.notaClon{
+    background: var(--first-background-color);
+    border: 1px solid var(--border-color);
+    transform: scale(1.065);
+    opacity: 1 !important;
+    box-shadow: 0 5px 10px #00000020;
 }
 
 .eliminar{
@@ -658,6 +677,12 @@ nav ul li a:hover{
 }
 .nota:hover .eliminar, .evento:hover .eliminar{
     display: flex;
+}
+.notaFantasma:hover .eliminar{
+    display: none;
+}
+.notaFantasma:hover{
+    box-shadow: none;
 }
 
 .fecha{

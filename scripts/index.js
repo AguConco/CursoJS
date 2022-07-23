@@ -60,13 +60,16 @@ FORM_CREAR_NOTA.onsubmit = e => {
     if(tituloNota == '' && descripcionNota == ''){
         notificacion('La nota debe tener título o descripción')
     }else {
-        let id = JSON.parse(localStorage.getItem('nota'))
-
-        id != null ? id = 'n'+id.length : id = 'n0'
-
-        let datosNota = [tituloNota, descripcionNota,id]
+        let nuevoId = 'N-' + Math.random().toString(36).substr(2)          
+        let datosNota = [tituloNota, descripcionNota,nuevoId]
         crearNota(datosNota)
         FORM_CREAR_NOTA.reset()
+
+        let ordenNotas = localStorage.getItem('ordenNotas');
+        ordenNotas = ordenNotas ? ordenNotas.split('|') : []
+        ordenNotas.unshift(nuevoId)
+        localStorage.setItem('ordenNotas', ordenNotas.join('|'));
+
         BTN_SECCION_NOTAS.onclick()
         window.location.href = '#notas'
     }
@@ -103,11 +106,9 @@ FORM_CREAR_EVENTO.onsubmit = e => {
         if(tituloEvento == ''){
             tituloEvento = '(Sin título)'
         }
-        let id = JSON.parse(localStorage.getItem('evento'))
-        
-        id != null ? id = 'e'+id.length : id = 'e0'
+        let nuevoId = 'E-' + Math.random().toString(36).substr(2)          
 
-        let datosEvento = [tituloEvento,descripcionEvento,fechaEvento,horaInicio,horaFin,categoriaEvento,id]
+        let datosEvento = [tituloEvento,descripcionEvento,fechaEvento,horaInicio,horaFin,categoriaEvento,nuevoId]
         crearEvento(datosEvento)
         FORM_CREAR_EVENTO.reset()
         BTN_SECCION_EVENTOS.onclick()
@@ -119,6 +120,8 @@ BTN_SECCION_EVENTOS.onclick = () => {
 
     BTN_SECCION_EVENTOS.className = 'seccionActual'
     BTN_SECCION_NOTAS.className = ''
+    SECCION_NOTAS.style.display = 'none'
+    SECCION_EVENTOS.style.display = 'block'
     CALENDARIO.className = 'calendarioVisible'
     mostrarEventos()
 }
@@ -126,6 +129,8 @@ BTN_SECCION_NOTAS.onclick = () => {
 
     BTN_SECCION_NOTAS.className = 'seccionActual'
     BTN_SECCION_EVENTOS.className = ''
+    SECCION_NOTAS.style.display = 'block'
+    SECCION_EVENTOS.style.display = 'none'
     CALENDARIO.className = 'calendarioOculto'
     mostrarNotas()
 }
@@ -199,18 +204,24 @@ function mostrarNotas(){
     }else {
         NADA_CREADO.remove()
 
-        notas.forEach(e => {
-            CONTENEDOR_NOTAS.innerHTML += `
-            <div class="nota" id="${e.id}">
-                <h2>${e.titulo}</h2>
-                <div class="imgNota"></div>
-                <p>${e.descripcion.replace(/\n/g, "<br />")}</p>
-                <div class="eliminar">
-                    <span>Eliminar</span>
-                    <i class="fas fa-times"></i>
-                </div>
-            </div>
-            `
+        let ordenNotas =  localStorage.getItem('ordenNotas');
+        ordenNotas = ordenNotas ? ordenNotas.split('|') : [];
+        ordenNotas.forEach(e => { 
+            notas.forEach(j => {
+                if(j.id == e){
+                    CONTENEDOR_NOTAS.innerHTML += `
+                    <div class="nota" id="${j.id}" data-id="${j.id}">
+                        <h2>${j.titulo}</h2>
+                        <div class="imgNota"></div>
+                        <p>${j.descripcion.replace(/\n/g, "<br />")}</p>
+                        <div class="eliminar">
+                            <span>Eliminar</span>
+                            <i class="fas fa-times"></i>
+                        </div>
+                    </div>
+                    `
+                }   
+            })
         })
         SECCION_NOTAS.append(CONTENEDOR_NOTAS)
         const ELIMINAR = document.querySelectorAll('.eliminar')
@@ -259,7 +270,7 @@ function mostrarEventos(){
 function buscador(datosBuscar){
     CONTENEDOR_RESULTADO.innerHTML = ''
     let titulosABuscar = [...notas,...eventos]
-    let resultado = titulosABuscar.filter(e => e.titulo.toLowerCase().includes(datosBuscar)) 
+    let resultado = titulosABuscar.filter(({titulo}) => titulo.toLowerCase().includes(datosBuscar)) 
     resultado.length > 0 ? resultado.forEach(e => {CONTENEDOR_RESULTADO.innerHTML += `<div class="resultadoBusqueda" id="${e.id}">${e.titulo}</div>`}) : CONTENEDOR_RESULTADO.innerHTML = `<span>No se encontró nada con "${datosBuscar}"</span>`
 
 }
@@ -277,7 +288,7 @@ function eliminar(eliminar){
     eliminar.onclick = () =>{
         let guardados = ''
         let identificador = eliminar.parentNode.id
-        identificador.charAt(0) == 'e' ? guardados = 'evento' : guardados = 'nota'
+        identificador.charAt(0) == 'E' ? guardados = 'evento' : guardados = 'nota'
 
         let eventoNota = JSON.parse(localStorage.getItem(guardados))        
         if(eventoNota != null){
@@ -288,8 +299,7 @@ function eliminar(eliminar){
                     let eventoNotaJson = JSON.stringify(eventoNota)
                     localStorage.setItem(guardados,eventoNotaJson)
                     guardados == 'evento' ? notificacion(`Evento "${tituloAEliminar}" eliminado`) : notificacion(`Nota "${tituloAEliminar}" eliminada`)
-                    mostrarEventos()
-                    mostrarNotas()
+                    guardados == 'evento' ?  mostrarEventos() : mostrarNotas()
                 }
             }
         }
