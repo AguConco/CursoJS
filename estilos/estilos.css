@@ -23,7 +23,7 @@
 *::selection{
     background: #00000015;
 }
-/* *::-webkit-scrollbar {
+*::-webkit-scrollbar {
     width: 8px;
     height: 8px; 
 }
@@ -37,7 +37,7 @@
 }
 *:hover::-webkit-scrollbar-thumb{
     background: #dfdfdf;
-} */ 
+}
 body{
     background: var(--second-background-color);
     overflow: hidden;
@@ -277,6 +277,7 @@ header{
 main{
     display: flex;
     position: relative;
+    overflow-x: hidden;
 }
 
 aside{
@@ -300,12 +301,14 @@ aside:nth-child(3){
 }
 .calendarioOculto{
     transform: translateX(100%); 
+    visibility: hidden;
     position:absolute; 
     right:0; 
     top:0;
 }
 .calendarioVisible{
     transform: translateX(0);
+    visibility: visible;
 }
 .calendario{
     background: var(--first-background-color);
@@ -398,13 +401,13 @@ aside:nth-child(3){
     grid-template-columns: repeat(7, 1fr);
     gap: 5px;
 }
-.calendarioDiasNumero span{
+.calendarioDiasNumero .divDia{
     text-align: center;
     border-radius: 3px;
     font-size: 15px;
     cursor: pointer;
-    position: relative;
     animation: spanCalendario .8s 1;
+    position: relative;
 }
 @keyframes spanCalendario {
     0%{
@@ -414,15 +417,60 @@ aside:nth-child(3){
         opacity: 1;
     }
 }
-.calendarioDiasNumero span.diaActual{
+.calendarioDiasNumero .divDia.diaActual{
     background: var(--second-color);
     color: var(--first-color);
 }
-.calendarioDiasNumero span.diaActual:hover{
+.calendarioDiasNumero .divDia .contenedorEventosDias{
+    position: absolute;
+    bottom: -1px;
+    height: 5px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.calendarioDiasNumero .divDia .contenedorEventosDias span{
+    border-radius: 50%;
+    height: 5px;
+    width: 10px;
+    margin: 0 1px;
+    overflow: hidden;
+    pointer-events: none;
+    transform: scaleX(.5) translateX(50%);
+    transition: transform .2s;
+    position: relative;
+    right: 2px;
+}
+.calendarioDiasNumero .divDia:hover .contenedorEventosDias span h4{
+    color: #fff;
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 16px;
+    padding-top: 2px;
+    margin-bottom: 3px;
+}
+.calendarioDiasNumero div.diaActual:hover{
     background: var(--second-color)
 }
-.calendarioDiasNumero span:hover{
+.calendarioDiasNumero .divDia:hover{
     background: var(--second-background-color);
+}
+.calendarioDiasNumero .divDia:hover .contenedorEventosDias span{
+    border-radius: 5px;
+    color: #f5f5f5;
+    width: 250px;
+    height: auto;
+    overflow: visible;
+    position: absolute;
+    top: -18px;
+    right: 0;
+    z-index: 1000;
+    padding: 5px 10px;
+    text-align: start;
+    font-size: 12px;
+    box-shadow: 0 5px 10px #00000020;
+    transform: scaleX(1) translateX(0);
 }
 
 nav ul li a{
@@ -453,12 +501,12 @@ nav ul li a:hover{
     background: var(--second-color);
 }
 
-.contenedorCarpetasLateral, .contenedorCategoriasLateral{
+.contenedorSeccionLateral{
     margin-top: 30px;
     overflow: auto;
     /* max-height: 200px; */
 }
-.contenedorCarpetasLateral h3, .contenedorCategoriasLateral h3{
+.contenedorSeccionLateral h3{
     font-weight: 300;
     font-size: 15px;
     margin-bottom: 10px; 
@@ -470,7 +518,7 @@ nav ul li a:hover{
     justify-content: space-between;
     align-items: center;
 }
-.contenedorCarpetasLateral h3 i, .contenedorCategoriasLateral h3 i{
+.contenedorSeccionLateral h3 i{
     font-size: 10px;
     color: var(--text-color);
     border: 1px solid var(--border-color);
@@ -479,10 +527,10 @@ nav ul li a:hover{
     display: none;
     cursor: pointer;
 }
-.contenedorCarpetasLateral h3 i:hover, .contenedorCategoriasLateral h3 i:hover{
+.contenedorSeccionLateral h3 i:hover{
     background: var(--second-background-color);
 }
-.contenedorCarpetasLateral:hover h3 i, .contenedorCategoriasLateral:hover h3 i{
+.contenedorSeccionLateral:hover h3 i{
     display: block;
 }
 .carpetaLateral{
@@ -506,7 +554,7 @@ nav ul li a:hover{
     background: var(--second-background-color);
 }
 
-.categoriaLetaral{
+.categoriaLetaral, .feriados{
     width: calc(100% - 20px);
     margin: 3px 0;
     padding: 3px 10px;
@@ -515,11 +563,11 @@ nav ul li a:hover{
     border-radius: 5px;
     cursor: pointer;
 }
-.categoriaLetaral h4{
+.categoriaLetaral h4, .feriados h4{
     font-weight: 300;
     font-size: 14px;
 }
-.categoriaLetaral i{
+.categoriaLetaral i, .feriados i{
     margin-right: 10px;
     font-size: 12px;
 }
@@ -615,10 +663,13 @@ nav ul li a:hover{
 .nota p{
     font-size: 13px;
     display: -webkit-box;
-    -webkit-line-clamp: 12;
+    -webkit-line-clamp: 14;
     -webkit-box-orient: vertical;
     overflow: hidden;
     max-width: calc(100% - 25px);
+}
+.nota a{
+    color: #1872fa;
 }
 .notaFantasma{
     border: 2px dashed #ddd;
@@ -784,7 +835,7 @@ nav ul li a:hover{
 
 .seccionCrearNuevo{
     position: fixed;
-    background: #00000070;
+    background: #00000040;
     height: 100vh;
     width: 100vw;
     top: 0;

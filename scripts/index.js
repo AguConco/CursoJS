@@ -4,7 +4,7 @@ const BUSCADOR = document.querySelector('#buscador')
 const FORM_BUSCADOR = document.querySelector('#formBuscador')
 const CONTENEDOR_RESULTADO = document.querySelector('#contenedorResultados')
 
-const CALENDARIO = document.querySelector('#calendario')
+const SECCION_CALENDARIO = document.querySelector('#calendario')
 const FORM_CREAR_NOTA = document.querySelector('#formNota')
 const FORM_CREAR_EVENTO = document.querySelector('#formEvento')
 const CATEGORIA_EVENTO = document.querySelector('#categoriaEvento')
@@ -56,7 +56,13 @@ FORM_CREAR_NOTA.onsubmit = e => {
 
     let tituloNota = document.querySelector('#tituloNota').value
     let descripcionNota = document.querySelector('#descripcionNota').value
+    descripcionNota = descripcionNota.replace(/\n/g, " <br> ")
 
+    let arrayDescripcionNota = descripcionNota.split(/\s+/g) 
+    let expresion = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    descripcionNota = ''
+    arrayDescripcionNota.forEach(e => { descripcionNota += e.replace(expresion,'<a rel="nofollow" target="_blank" href="mailto:'+e+'"> '+e+' </a>') + ' '});
+    
     if(tituloNota == '' && descripcionNota == ''){
         notificacion('La nota debe tener título o descripción')
     }else {
@@ -122,8 +128,9 @@ BTN_SECCION_EVENTOS.onclick = () => {
     BTN_SECCION_NOTAS.className = ''
     SECCION_NOTAS.style.display = 'none'
     SECCION_EVENTOS.style.display = 'block'
-    CALENDARIO.className = 'calendarioVisible'
+    SECCION_CALENDARIO.className = 'calendarioVisible'
     mostrarEventos()
+    actualizarCalendario(numeroMes,anio)
 }
 BTN_SECCION_NOTAS.onclick = () => {
 
@@ -131,7 +138,7 @@ BTN_SECCION_NOTAS.onclick = () => {
     BTN_SECCION_EVENTOS.className = ''
     SECCION_NOTAS.style.display = 'block'
     SECCION_EVENTOS.style.display = 'none'
-    CALENDARIO.className = 'calendarioOculto'
+    SECCION_CALENDARIO.className = 'calendarioOculto'
     mostrarNotas()
 }
 FORM_BUSCADOR.onsubmit = e => {
@@ -213,7 +220,7 @@ function mostrarNotas(){
                     <div class="nota" id="${j.id}" data-id="${j.id}">
                         <h2>${j.titulo}</h2>
                         <div class="imgNota"></div>
-                        <p>${j.descripcion.replace(/\n/g, "<br />")}</p>
+                        <p>${j.descripcion}</p>
                         <div class="eliminar">
                             <span>Eliminar</span>
                             <i class="fas fa-times"></i>

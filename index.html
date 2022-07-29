@@ -59,14 +59,14 @@
                     <li><a href="#"><i class="fas fa-tasks"></i>Proyectos</a></li>
                 </ul>
             </nav>
-            <div class="contenedorCarpetasLateral">
+            <div class="contenedorSeccionLateral">
                 <h3>Mis carpetas <i class="fas fa-plus"></i></h3>
                 <div id="contenedorCarpetasLeteral">
                     <div class="carpetaLateral"><i class="far fa-folder-open"></i><h4>Nombre de la carpeta</h4></div>
                     <div class="carpetaLateral"><i class="far fa-folder"></i><h4>Nombre de la carpeta</h4></div>
                 </div>
             </div>
-            <div class="contenedorCategoriasLateral">
+            <div class="contenedorSeccionLateral">
                 <h3>Categorías de eventos <i class="fas fa-plus"></i></h3>
                 <div id="contenedorCategoriasLateral">
                     <div class="categoriaLetaral"><i class="fas fa-circle" style="color:#cd0101;"></i><h4>Trabajo</h4></div>
@@ -96,7 +96,7 @@
                         <i class="fas fa-angle-left"></i>
                     </button>
                     <div>
-                        <h4 id="mesCalendario">julio</h4><span id="anioCalendario">2022</span>
+                        <h4 id="mesCalendario"></h4><span id="anioCalendario"></span>
                         <div id="volverHoy">HOY</div>
                     </div>
                     <button id="mesSiguiente">
@@ -112,38 +112,16 @@
                     <span>Sáb</span>
                     <span>Dom</span>
                 </div>
-                <div class="calendarioDiasNumero">
-                    <span style="grid-column-start: 4;">1</span>
-                    <span>2</span>
-                    <span>3</span>
-                    <span>4</span>
-                    <span>5</span>
-                    <span>6</span>
-                    <span>7</span>
-                    <span class="diaActual">8</span>
-                    <span>9</span>
-                    <span>10</span>
-                    <span>11</span>
-                    <span>12</span>
-                    <span>13</span>
-                    <span>14</span>
-                    <span>15</span>
-                    <span>16</span>
-                    <span>17</span>
-                    <span>18</span>
-                    <span>19</span>
-                    <span>20</span>
-                    <span>21</span>
-                    <span>22</span>
-                    <span>23</span>
-                    <span>24</span>
-                    <span>25</span>
-                    <span>26</span>
-                    <span>27</span>
-                    <span>28</span>
-                    <span>29</span>
-                    <span>30</span>
-                    <span>31</span>
+                <div id="calendarioDiasNumero" class="calendarioDiasNumero">
+                </div>
+            </div>
+            <div class="contenedorSeccionLateral">
+                <h3>Feriados</h3>
+                <div>
+                    <div class="feriados"><i class="fas fa-circle" style="color:#0072bb;"></i><h4>Feriados inamovibles</h4></div>
+                    <div class="feriados"><i class="fas fa-circle" style="color:#2e7d33;"></i><h4>Feriados trasladables</h4></div>
+                    <div class="feriados"><i class="fas fa-circle" style="color:#c1c1c1;"></i><h4>Días no laborables</h4></div>
+                    <div class="feriados"><i class="fas fa-circle" style="color:#6A1B99;"></i><h4>Turísticos</h4></div>
                 </div>
             </div>
         </aside>
@@ -229,6 +207,7 @@
     <script src="scripts/Sortable.min.js"></script>
     <script src="scripts/index.js"></script>
     <script src="scripts/dragDrop.js"></script>
+    <script src="scripts/calendario.js"></script>
 </body>
 </html>
 
