@@ -9,7 +9,7 @@ const CALENDARIO_DIAS_NUMERO = document.querySelector('#calendarioDiasNumero')
 
 let anio = FECHA.getFullYear()
 let numeroMes = FECHA.getMonth()
-let diasFeriados
+let diasFeriados = []
 
 feriados()
 
@@ -71,7 +71,7 @@ function actualizarCalendario(mes, anio) {
 async function feriados(){
     let respuesta 
     try {
-        respuesta = await fetch('../feriadosArgApi.json')
+        respuesta = await fetch('./feriadosArgApi.json')
         diasFeriados = await respuesta.json()
 
     } catch (error) {
