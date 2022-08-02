@@ -56,14 +56,10 @@ FORM_CREAR_NOTA.onsubmit = e => {
 
     let tituloNota = document.querySelector('#tituloNota').value
     let descripcionNota = document.querySelector('#descripcionNota').value
-    descripcionNota = descripcionNota.replace(/\n/g, " <br> ")
 
-    let arrayDescripcionNota = descripcionNota.split(/\s+/g) 
-    let expresion = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    descripcionNota = ''
-    arrayDescripcionNota.forEach(e => { descripcionNota += e.replace(expresion,'<a rel="nofollow" target="_blank" href="mailto:'+e+'"> '+e+' </a>') + ' '});
-    
-    if(tituloNota == '' && descripcionNota == ''){
+    descripcionNota = validarExpresiones(descripcionNota)
+
+    if(tituloNota.trim() == '' && descripcionNota.trim() == ''){
         notificacion('La nota debe tener título o descripción')
     }else {
         let nuevoId = 'N-' + Math.random().toString(36).substr(2)          
@@ -79,8 +75,6 @@ FORM_CREAR_NOTA.onsubmit = e => {
         BTN_SECCION_NOTAS.onclick()
         window.location.href = '#notas'
     }
-    
-
 }
 FORM_CREAR_EVENTO.onsubmit = e => {
     e.preventDefault()
@@ -219,7 +213,6 @@ function mostrarNotas(){
                     CONTENEDOR_NOTAS.innerHTML += `
                     <div class="nota" id="${j.id}" data-id="${j.id}">
                         <h2>${j.titulo}</h2>
-                        <div class="imgNota"></div>
                         <p>${j.descripcion}</p>
                         <div class="eliminar">
                             <span>Eliminar</span>
@@ -235,6 +228,7 @@ function mostrarNotas(){
         ELIMINAR.forEach(e => {
             eliminar(e)
         })
+        detalleNotas()
     }
 }
 function mostrarEventos(){
@@ -251,12 +245,11 @@ function mostrarEventos(){
         SECCION_EVENTOS.append(NADA_CREADO)
     }else {
         NADA_CREADO.remove()
-
         eventos.forEach(e => {
             CONTENEDOR_EVENTOS.innerHTML += `
             <div class="evento" id="${e.id}">
                 <h2>${e.titulo}</h2>
-                <p>${e.descripcion.replace(/\n/g, "<br />")}</p>
+                <p>${descripcion.replace(/\n/g, "<br />")}</p>
                 <span class="indicadorTipoEvento" style="background:${e.categoria[1]};">${e.categoria[0]}</span>
                 <span class="horaEvento">${e.horaInicio} - ${e.horaFin}<!--<i class="far fa-bell"></i>--></span>
                 <div class="eliminar">
@@ -311,4 +304,13 @@ function eliminar(eliminar){
             }
         }
     }
+}
+function validarExpresiones(descripcion){
+    descripcion = descripcion.replace(/\n/g, " <br> ")
+
+    let arrayDescripcion = descripcion.split(/\s+/g) 
+    let expresion = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    descripcion = ''
+    arrayDescripcion.forEach(e => { descripcion += e.replace(expresion,'<a rel="nofollow" target="_blank" href="mailto:'+e+'"> '+e+' </a>') + ' '});
+    return descripcion
 }

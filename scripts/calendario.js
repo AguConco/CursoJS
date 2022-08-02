@@ -56,7 +56,8 @@ function actualizarCalendario(mes, anio) {
 
         if (i == 1) {
             div.style.gridColumnStart = PRIMER_DIA_MES + 1
-        } else if (i == FECHA.getDate() && mes == FECHA.getMonth() && anio == FECHA.getFullYear()) {
+        }
+        if (i == FECHA.getDate() && mes == FECHA.getMonth() && anio == FECHA.getFullYear()) {
             div.className = 'divDia diaActual'
         }
         mostrarFeriados(i,mes,div)
