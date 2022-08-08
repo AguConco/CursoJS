@@ -58,6 +58,7 @@ CONTENEDOR_TEMAS.onclick = ({target}) => {
 
 function inicializarTema(){
     tema = localStorage.getItem('tema') || 1
+    cambiarTema(tema)
 }
 function cambiarTema(e){
     ROOT.style.setProperty('--text-color', TEMAS[e].textColor)
