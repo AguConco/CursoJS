@@ -1261,6 +1261,7 @@ nav ul li a:hover{
     outline: none;
     padding: 5px;
     font-size: 12px;
+    background: var(--first-background-color);
 }
 
 #contenedorBtnTemas{
