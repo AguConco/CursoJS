@@ -19,6 +19,7 @@
     padding: 0;
     box-sizing: border-box;
     color: var(--text-color);
+    transition: background .1s;
 }
 *::selection{
     background: #00000015;
@@ -160,9 +161,10 @@ header{
     height: 40px;
     font-size: 15px;
     outline: none;
-    border: 1px solid #ddd;
+    border: 1px solid var(--border-color);
     border-radius: 5px;
-    color: #575758;
+    color: var(--text-color);
+    background: var(--second-background-color);
 }
 .buscador button{
     position: absolute;
@@ -174,10 +176,10 @@ header{
     border: none;
     border-radius: 3px;
     cursor: pointer;
-    background: #eee;
+    background: var(--first-background-color);
 }
 .buscador button i{
-    color: #575758;
+    color: var(--text-color);
 }
 .buscador input:focus + #contenedorResultados {
     display: block;
@@ -276,10 +278,11 @@ header{
 #configuracion{
     cursor: pointer;
     position: relative;
+    border-radius: 50%;
 }
 #configuracion i{
     font-size: 18px;
-    -webkit-text-stroke: 1.5px #575758;
+    -webkit-text-stroke: 1.5px var(--text-color);
     color: transparent;
     pointer-events: none;
     height: 35px;   
@@ -287,7 +290,7 @@ header{
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #eee;
+    background: var(--second-background-color);
     border-radius: 50%;
 }
 #configuracion i:hover{
@@ -566,6 +569,8 @@ nav ul li a:hover{
     border: 1px solid var(--border-color);
     outline: none;
     padding: 5px 10px;
+    background: var(--first-background-color);
+    color: var(--text-color);
 }
 #cantidadCaracteres{
     position: absolute;
@@ -746,36 +751,6 @@ nav ul li a:hover{
     scroll-snap-align: center;
     flex: none;
     width: 100%;
-}
-
-#contenedorCarpetas{
-    width: 100%;
-    display: flex;
-    align-items: flex-start;
-    margin-bottom: 20px;
-}
-.carpeta{
-    margin: 0 10px 10px;
-    background: var(--first-background-color);
-    width: 220px;
-    border-radius: 5px;
-    border: 1px solid var(--border-color);
-    display: flex;
-    align-items: center;
-    padding: 10px 15px;
-    cursor: pointer;
-}
-.carpeta h4{
-    font-size: 15px;
-    font-weight: 300;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    max-width: 190px;
-    margin-left: 10px;
-}
-.carpeta:hover{
-    box-shadow: 0 5px 10px #00000020;
 }
 
 #contenedorNotas{
@@ -996,7 +971,7 @@ nav ul li a:hover{
     color: #fff;
 }
 
-.seccionCrearNuevo, .seccionDetalle{
+.seccionCrearNuevo, .seccionDetalle, .temas{
     position: fixed;
     background: #00000040;
     height: 100vh;
@@ -1009,17 +984,17 @@ nav ul li a:hover{
     display: none;
     z-index: 100;
 }
-.seccionCrearNuevo:target, .seccionDetalle:target{
+.seccionCrearNuevo:target, .seccionDetalle:target, .temas:target{
     display: flex;
 }
-.seccionCrearNuevo > a, .seccionDetalle > a{
+.seccionCrearNuevo > a, .seccionDetalle > a, .temas > a{
     position: absolute;
     height: 100%;
     width: 100%;
     z-index: -1;
     cursor: auto;
 }
-.seccionCrearNuevo > div, .seccionDetalle > div{
+.seccionCrearNuevo > div, .seccionDetalle > div, .temas > div{
     background: var(--first-background-color);
     border-radius: 5px;
     width: 400px;
@@ -1036,7 +1011,7 @@ nav ul li a:hover{
         transform: scale(1);
     }
 }
-.seccionCrearNuevo h1{
+.seccionCrearNuevo h1, .temas h1{
     font-size: 20px;
     margin-bottom: 10px;
     font-weight: 300;
@@ -1044,7 +1019,7 @@ nav ul li a:hover{
     justify-content: space-between;
     align-items: flex-start;
 }
-.seccionCrearNuevo h1 a{
+.seccionCrearNuevo h1 a, .temas h1 a{
     font-size: 14px;
     position: relative;
     height: 25px;
@@ -1062,7 +1037,8 @@ nav ul li a:hover{
     border: 1px solid var(--border-color);
     border-bottom: none;
     outline: none;
-    color: #575758;
+    color: var(--text-color);
+    background: var(--first-background-color);
 }
 .seccionCrearNuevo form textarea{
     padding: 5px 10px;
@@ -1077,8 +1053,10 @@ nav ul li a:hover{
     max-width: 100%;
     min-height: 120px;
     max-height: 200px;
+    background: var(--first-background-color);
+    color: var(--text-color);
 }
-.seccionCrearNuevo h1 a:hover{
+.seccionCrearNuevo h1 a:hover, .temas h1 a:hover{
     background: var(--second-background-color);
 }
 .btnForm{
@@ -1130,7 +1108,6 @@ nav ul li a:hover{
     height: auto;
 }
 .opcionesASeleccionar{
-    background: #fff;
     width: 150px;
     height: 0;
     overflow: hidden;
@@ -1140,6 +1117,7 @@ nav ul li a:hover{
     border-radius: 5px;
     max-height: 150px;
     overflow-y: auto;
+    border: none;
 }
 .opcionesASeleccionar button{
     width: 100%;
@@ -1175,6 +1153,7 @@ nav ul li a:hover{
     outline: none;
     padding: 5px;
     font-size: 12px;
+    background: var(--first-background-color);
 }
 
 .recordatorio{
@@ -1234,6 +1213,7 @@ nav ul li a:hover{
     border: none;
     padding: 5px 0;
     font-size: 18px;
+    background: var(--first-background-color);
 }   
 #descripcionNotaEditar, #descripcionEventoEditar{
     width: 100%;
@@ -1281,4 +1261,29 @@ nav ul li a:hover{
     outline: none;
     padding: 5px;
     font-size: 12px;
+}
+
+#contenedorBtnTemas{
+    margin-top: 20px;
+    display: flex;
+}
+#contenedorBtnTemas button{
+    height: 45px;
+    width: 45px;
+    border-radius: 50%;
+    border: 1px solid var(--border-color);
+    outline: none;
+    cursor: pointer;
+}
+#contenedorBtnTemas div{
+    border-radius: 50%;
+    height: 45px;
+    width: 45px;
+    margin: 0 3px;
+}
+#contenedorBtnTemas div span{
+    transform: translate(-50%, 18px);
+}
+#contenedorBtnTemas button:active{
+    transform: scale(.95);
 }

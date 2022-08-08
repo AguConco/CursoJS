@@ -1,5 +1,6 @@
 
 const OPCIONES_AGREGAR = document.querySelector('#agregarOpciones')
+const OPCIONES_CONFIGURACION = document.querySelector('#configuracionOpciones')
 const BUSCADOR = document.querySelector('#buscador')
 const FORM_BUSCADOR = document.querySelector('#formBuscador')
 const CONTENEDOR_RESULTADO = document.querySelector('#contenedorResultados')
@@ -43,7 +44,8 @@ document.onkeydown = ({altKey,keyCode}) =>{
 
 }
 document.onclick = ({target}) => {
-    target.id == 'agregar' ? OPCIONES_AGREGAR.style.display = "block": OPCIONES_AGREGAR.style.display = "none"
+    target.id == 'agregar' ? OPCIONES_AGREGAR.style.display = 'block' : OPCIONES_AGREGAR.style.display = 'none'
+    target.id == 'configuracion' ? OPCIONES_CONFIGURACION.style.display = 'block' : OPCIONES_CONFIGURACION.style.display = 'none'
 }
 
 RECORDATORIO.onclick = () =>{
