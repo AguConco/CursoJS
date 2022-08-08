@@ -19,9 +19,11 @@ const SECCION_EVENTOS = document.querySelector('#eventos')
 
 const BTN_SECCION_EVENTOS = document.querySelector('#seccionEventos')
 const BTN_SECCION_NOTAS = document.querySelector('#seccionNotas')
+const RECORDATORIO = document.querySelector('#recordatorioEvento')
 
 let notas = JSON.parse(localStorage.getItem('nota')) || []
 let eventos = JSON.parse(localStorage.getItem('evento')) || []
+let recordatorio = 'hidden'
 
 CONTENEDOR_NOTAS.id = 'contenedorNotas'
 CONTENEDOR_EVENTOS.id = 'contenedorEventos'
@@ -44,6 +46,24 @@ document.onclick = ({target}) => {
     target.id == 'agregar' ? OPCIONES_AGREGAR.style.display = "block": OPCIONES_AGREGAR.style.display = "none"
 }
 
+RECORDATORIO.onclick = () =>{
+    if(recordatorio == 'hidden'){
+        recordatorio = 'visible'
+        RECORDATORIO.style.cssText = 'animation: recordatorio .8s 1;'
+        setTimeout(()=> {
+            RECORDATORIO.className = 'fas fa-bell'
+            RECORDATORIO.style.cssText = ''
+        },1000)
+
+    }else{
+        recordatorio = 'hidden'
+        RECORDATORIO.style.cssText = 'animation: recordatorio .8s 1;'
+        setTimeout(()=> { 
+            RECORDATORIO.className = 'far fa-bell'
+            RECORDATORIO.style.cssText = ''
+        },1000)
+    }
+}
 OPCIONES_SELECCIONAR.onclick = ({target}) =>{
     CATEGORIA_EVENTO.value = target.value 
     OPCIONES_SELECCIONAR.style.pointerEvents = 'none'
@@ -62,7 +82,7 @@ FORM_CREAR_NOTA.onsubmit = e => {
     if(tituloNota.trim() == '' && descripcionNota.trim() == ''){
         notificacion('La nota debe tener título o descripción')
     }else {
-        let nuevoId = 'N-' + Math.random().toString(36).substr(2)          
+        let nuevoId = 'N-' + generarId()          
         let datosNota = [tituloNota, descripcionNota,nuevoId]
         crearNota(datosNota)
         FORM_CREAR_NOTA.reset()
@@ -85,32 +105,40 @@ FORM_CREAR_EVENTO.onsubmit = e => {
     let horaInicio = document.querySelector('#horaInicio').value
     let horaFin = document.querySelector('#horaFin').value
 
-    let categoriaEvento = [
-        ['Trabajo', '#cd0101'],
-        ['Personal', '#7800e3'],
-        ['Cumpleaños', '#40c100'],
-        ['Estudios', '#1872fa']
-    ]
+    descripcionEvento = validarExpresiones(descripcionEvento)
+
+    let categoriaEvento = JSON.parse(localStorage.getItem('categorias')) || []
+
     for(let e of categoriaEvento){
-        if(e[0] == CATEGORIA_EVENTO.value){
+        if(e.nombre == CATEGORIA_EVENTO.value){
             categoriaEvento = e
             break
         }else{
-            categoriaEvento = [[]]
+            categoriaEvento = {
+                nombre: 'Ninguna',
+                color: '',
+                id: ''
+            }
         }
     }
 
     if(fechaEvento == '' || horaInicio == '' || horaFin == ''){
         notificacion('El evento debe tener fecha y hora de cuando será')
-    }else {
+    }else{
+        let fechaActualizar = fechaEvento.split('-')
+        fechaMostrarEvento = fechaEvento
+        fechaActualActualizar(parseInt(fechaActualizar[0]),parseInt((fechaActualizar[1]-1)),parseInt(fechaActualizar[2]))
+    
         if(tituloEvento == ''){
             tituloEvento = '(Sin título)'
         }
-        let nuevoId = 'E-' + Math.random().toString(36).substr(2)          
+        let nuevoId = 'E-' + generarId()          
 
-        let datosEvento = [tituloEvento,descripcionEvento,fechaEvento,horaInicio,horaFin,categoriaEvento,nuevoId]
+        let datosEvento = [tituloEvento,descripcionEvento,fechaEvento,horaInicio,horaFin,categoriaEvento,recordatorio,nuevoId]
         crearEvento(datosEvento)
         FORM_CREAR_EVENTO.reset()
+        recordatorio = 'visible'
+        RECORDATORIO.onclick()
         BTN_SECCION_EVENTOS.onclick()
         window.location.href = '#eventos'
     }
@@ -166,7 +194,8 @@ function crearEvento(datosEvento) {
             this.horaInicio = datos[3]
             this.horaFin = datos[4]
             this.categoria = datos[5]
-            this.id = datos[6]
+            this.recordatorio = datos[6]
+            this.id = datos[7]
         }  
     }
     const evento = new Eventos(datosEvento)
@@ -214,8 +243,8 @@ function mostrarNotas(){
                     <div class="nota" id="${j.id}" data-id="${j.id}">
                         <h2>${j.titulo}</h2>
                         <p>${j.descripcion}</p>
-                        <div class="eliminar">
-                            <span>Eliminar</span>
+                        <div class="eliminar contenedorSpanAviso">
+                            <span class="spanAviso">Eliminar</span>
                             <i class="fas fa-times"></i>
                         </div>
                     </div>
@@ -235,37 +264,34 @@ function mostrarEventos(){
     eventos = JSON.parse(localStorage.getItem('evento')) || []
     CONTENEDOR_EVENTOS.innerHTML = ''
 
-    if(eventos.length == 0){
-        CONTENEDOR_EVENTOS.remove()
-
-        NADA_CREADO.innerHTML = `
-        <h4>No hay <span>eventos</span> creados</h4>
+    NADA_CREADO.innerHTML = `
+        <h4>No hay <span>eventos</span> creados para esta fecha</h4>
         <p>Puedes crear uno con el boton <span class="spanCrear">CREAR <i class="fas fa-plus"></i></span></p>
-        `
-        SECCION_EVENTOS.append(NADA_CREADO)
-    }else {
-        NADA_CREADO.remove()
-        eventos.forEach(e => {
+    `
+    CONTENEDOR_EVENTOS.append(NADA_CREADO)
+    eventos.forEach(e => {
+        if(fechaMostrarEvento == e.fecha){
+            NADA_CREADO.remove()
             CONTENEDOR_EVENTOS.innerHTML += `
             <div class="evento" id="${e.id}">
                 <h2>${e.titulo}</h2>
-                <p>${descripcion.replace(/\n/g, "<br />")}</p>
-                <span class="indicadorTipoEvento" style="background:${e.categoria[1]};">${e.categoria[0]}</span>
-                <span class="horaEvento">${e.horaInicio} - ${e.horaFin}<!--<i class="far fa-bell"></i>--></span>
-                <div class="eliminar">
-                    <span>Eliminar</span>
+                <p>${e.descripcion}</p>
+                <span class="indicadorTipoEvento" style="background:${e.categoria?.color};">${e.categoria?.nombre}</span>
+                <span class="horaEvento">${e.horaInicio} - ${e.horaFin}<i class="far fa-bell" style="visibility:${e.recordatorio};"></i></span>
+                <div class="eliminar contenedorSpanAviso">
+                    <span class="spanAviso">Eliminar</span>
                     <i class="fas fa-times"></i>
                 </div>
             </div>
             `
-        })
-        SECCION_EVENTOS.append(CONTENEDOR_EVENTOS)
-        const ELIMINAR = document.querySelectorAll('.eliminar')
-        ELIMINAR.forEach(e => {
-            eliminar(e)
-        })
-    }
-    
+        } 
+    })
+    SECCION_EVENTOS.append(CONTENEDOR_EVENTOS)
+    const ELIMINAR = document.querySelectorAll('.eliminar')
+    ELIMINAR.forEach(e => {
+        eliminar(e)
+    })
+    detalleEventos()
 }
 function buscador(datosBuscar){
     CONTENEDOR_RESULTADO.innerHTML = ''
@@ -296,8 +322,7 @@ function eliminar(eliminar){
                 if(identificador == eventoNota[i].id){
                     let tituloAEliminar = eventoNota[i].titulo || '(Sin título)'
                     eventoNota.splice(i,1)
-                    let eventoNotaJson = JSON.stringify(eventoNota)
-                    localStorage.setItem(guardados,eventoNotaJson)
+                    localStorage.setItem(guardados,JSON.stringify(eventoNota))
                     guardados == 'evento' ? notificacion(`Evento "${tituloAEliminar}" eliminado`) : notificacion(`Nota "${tituloAEliminar}" eliminada`)
                     guardados == 'evento' ?  mostrarEventos() : mostrarNotas()
                 }

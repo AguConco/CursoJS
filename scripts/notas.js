@@ -1,11 +1,11 @@
 
-let descripcionEditar = document.querySelector('#descripcionNotaEditar')
-let tituloEditar = document.querySelector('#tituloNotaEditar')
+const DESCRIPCION_NOTA_EDITAR = document.querySelector('#descripcionNotaEditar')
+const TITULO_NOTA_EDITAR = document.querySelector('#tituloNotaEditar')
 
-tituloEditar.onkeyup = () =>{
+TITULO_NOTA_EDITAR.onkeyup = () =>{
     editarNota()
 }
-descripcionEditar.onkeyup = () =>{
+DESCRIPCION_NOTA_EDITAR.onkeyup = () =>{
     editarNota()
 }
 
@@ -20,8 +20,8 @@ function detalleNotas(){
             let resultado = notas.find(({id}) => id == target.id)
             if(target.className == 'nota'){
                 window.location.href = "#detalleNota"
-                tituloEditar.value = resultado.titulo
-                descripcionEditar.innerHTML = resultado.descripcion
+                TITULO_NOTA_EDITAR.value = resultado.titulo
+                DESCRIPCION_NOTA_EDITAR.innerHTML = resultado.descripcion
             }
         }
     })
@@ -32,8 +32,8 @@ function editarNota(){
     for(let i = 0; i < notasGuardadas.length; i++){
         if(notasGuardadas[i].id == idNotaEditar){
             notasGuardadas.splice(i,1,{
-                titulo: tituloEditar.value,
-                descripcion: validarExpresiones(descripcionEditar.innerText),
+                titulo: TITULO_NOTA_EDITAR.value,
+                descripcion: validarExpresiones(DESCRIPCION_NOTA_EDITAR.innerText),
                 id: idNotaEditar
             })
             let notasEditadas = JSON.stringify(notasGuardadas)

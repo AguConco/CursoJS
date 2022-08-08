@@ -60,12 +60,42 @@
                 </ul>
             </nav>
             <div class="contenedorSeccionLateral">
-                <h3>Categorías de eventos <i class="fas fa-plus"></i></h3>
-                <div id="contenedorCategoriasLateral">
-                    <div class="categoriaLetaral"><i class="fas fa-circle" style="color:#cd0101;"></i><h4>Trabajo</h4></div>
-                    <div class="categoriaLetaral"><i class="fas fa-circle" style="color:#7800e3;"></i><h4>Personal</h4></div>
-                    <div class="categoriaLetaral"><i class="fas fa-circle" style="color:#1872fa;"></i><h4>Estudios</h4></div>
-                    <div class="categoriaLetaral"><i class="fas fa-circle" style="color:#36a101;"></i><h4>Cumpleaños</h4></div>
+                <h3>Categorías de eventos <i class="fas fa-plus" id="nuevaCategoria"></i></h3>
+                <div id="contenedorCategoriasLaterales">
+                </div>
+                <form id="formNuevaCategoria">
+                    <input type="text" id="nombreCategoria" placeholder="Nombre de la categoría" autocomplete="off">
+                    <span id="cantidadCaracteres">0/12</span>
+                    <div class="coloresCategoria">
+                        <div id="coloresPorDefecto">
+                            <button type="button" value="#ffb900" style="background: #ffb900;"></button>
+                            <button type="button" value="#e74856" style="background: #e74856;"></button>
+                            <button type="button" value="#0078d7" style="background: #0078d7;"></button>
+                            <button type="button" value="#00b7c3" style="background: #00b7c3;"></button>
+                        </div>
+                        <div class="contenedorColorPersonalizado contenedorSpanAviso">
+                            <i class="fas fa-palette"></i>
+                            <input type="color" id="colorPersonalizado">
+                            <span class="spanAviso">Personalizado</span>
+                        </div>
+                        <div class="contenedorColorElegido contenedorSpanAviso">
+                            <input type="color" id="colorElegido" value="#f5f5f5">
+                            <span class="spanAviso">Color elegido</span>
+                        </div>
+                    </div>
+                    <div class="divBtnCategorias">
+                        <button type="reset" id="cerrarNuevaCategoria">Cerrar</button>
+                        <button type="submit" id="crearCategoria">Crear</button>
+                    </div>
+                </form>
+            </div>
+            <div class="contenedorSeccionLateral">
+                <h3>Feriados</h3>
+                <div>
+                    <div class="feriados"><i class="fas fa-circle" style="color:#0072bb;"></i><h4>Feriados inamovibles</h4></div>
+                    <div class="feriados"><i class="fas fa-circle" style="color:#2e7d33;"></i><h4>Feriados trasladables</h4></div>
+                    <div class="feriados"><i class="fas fa-circle" style="color:#c1c1c1;"></i><h4>Días no laborables</h4></div>
+                    <div class="feriados"><i class="fas fa-circle" style="color:#6A1B99;"></i><h4>Turísticos</h4></div>
                 </div>
             </div>
         </aside>
@@ -76,7 +106,7 @@
                 <div id="contenedorFecha">
                     <h3 class="fecha">
                         <i class="fas fa-angle-left" id="fechaAnterior"></i>
-                        <span id="fecha">8 julio 2022</span>
+                        <span id="fecha"></span>
                         <i class="fas fa-angle-right" id="fechaSiguiente"></i>
                     </h3>
                 </div>
@@ -108,21 +138,12 @@
                 <div id="calendarioDiasNumero" class="calendarioDiasNumero">
                 </div>
             </div>
-            <div class="contenedorSeccionLateral">
-                <h3>Feriados</h3>
-                <div>
-                    <div class="feriados"><i class="fas fa-circle" style="color:#0072bb;"></i><h4>Feriados inamovibles</h4></div>
-                    <div class="feriados"><i class="fas fa-circle" style="color:#2e7d33;"></i><h4>Feriados trasladables</h4></div>
-                    <div class="feriados"><i class="fas fa-circle" style="color:#c1c1c1;"></i><h4>Días no laborables</h4></div>
-                    <div class="feriados"><i class="fas fa-circle" style="color:#6A1B99;"></i><h4>Turísticos</h4></div>
-                </div>
-            </div>
         </aside>
 
         <section id="crearNotaNueva" class="seccionCrearNuevo">
             <a href="#"></a>
             <div>
-                <h1>Nueva nota <a href="#"><span>Cerrar[Esc]</span><i class="fa fa-times"></i></a></h1>
+                <h1>Nueva nota <a href="#" class="contenedorSpanAviso"><span class="spanAviso">Cerrar[Esc]</span><i class="fa fa-times"></i></a></h1>
                 <form class="formCrear" id="formNota">
                     <input type="text" class="titulo" id="tituloNota" autocomplete="off" placeholder="Título">
                     <textarea id="descripcionNota" autocomplete="off" placeholder="Descripción"></textarea>
@@ -136,7 +157,7 @@
         <section id="crearEventoNuevo" class="seccionCrearNuevo">
             <a href="#"></a>
             <div>
-                <h1>Nuevo evento <a href="#"><span>Cerrar[Esc]</span><i class="fa fa-times"></i></a></h1>
+                <h1>Nuevo evento <a href="#" class="contenedorSpanAviso"><span class="spanAviso">Cerrar[Esc]</span><i class="fa fa-times"></i></a></h1>
                 <form class="formCrear" id="formEvento">
                     <input type="text" class="titulo" id="tituloEvento" autocomplete="off" placeholder="Título">
                     <textarea id="descripcionEvento" autocomplete="off" placeholder="Descripción"></textarea>
@@ -144,11 +165,6 @@
                         <h3>Categorías</h3>
                         <input type="text" class="inputOpcionSeleccionada" id="categoriaEvento" value="Ninguna" disabled>
                         <div class="opcionesASeleccionar" id="opcionesCategorias">
-                            <button type="button" value="Ninguna">Ninguna</button>
-                            <button type="button" value="Trabajo"><i class="fas fa-circle" style="color:#cd0101;"></i> Trabajo</button>
-                            <button type="button" value="Personal"><i class="fas fa-circle" style="color:#7800e3;"></i> Personal</button>
-                            <button type="button" value="Estudios"><i class="fas fa-circle" style="color:#1872fa;"></i> Estudios</button>
-                            <button type="button" value="Cumpleaños"><i class="fas fa-circle" style="color:#36a101;"></i> Cumpleaños</button>
                         </div>
                     </div>
                     <div class="fechaHora">
@@ -161,22 +177,11 @@
                             <input type="time" id="horaInicio"> 
                             -
                             <input type="time" id="horaFin">
-                            <div class="recordatorio">
-                                <span>Recordatorio</span>
+                            <div id="recordatorio" class="recordatorio contenedorSpanAviso">
+                                <span class="spanAviso">Recordatorio</span>
                                 <i id="recordatorioEvento" class="far fa-bell"></i>
                             </div>
                         </div>
-                    </div>
-                    <div class="repetir">
-                        <label for="repetir">Repetir</label>
-                        <input type="checkbox" id="repetir" disabled>
-                        <button type="button">L</button>
-                        <button type="button">M</button>
-                        <button type="button">M</button>
-                        <button type="button">J</button>
-                        <button type="button">V</button>
-                        <button type="button">S</button>
-                        <button type="button">D</button>
                     </div>
                     <div class="btnForm">
                         <button type="reset">Restaurar</button>
@@ -189,9 +194,39 @@
         <section id="detalleNota" class="seccionDetalle">
             <a href="#"></a>
             <div>
-                <a href="#" class="cerrarDetalle"><i class="fas fa-times"></i><span>Cerrar[Esc]</span></a>
+                <a href="#" class="cerrarDetalle contenedorSpanAviso"><i class="fas fa-times"></i><span class="spanAviso">Cerrar[Esc]</span></a>
                 <input type="text" id="tituloNotaEditar" placeholder="(Sin título)" autocomplete="off">
                 <div id="descripcionNotaEditar" contenteditable="true" aria-multiline="true" dir="ltr"></div>
+            </div>
+        </section>
+        <section id="detalleEvento" class="seccionDetalle">
+            <a href="#"></a>
+            <div>
+                <a href="#" class="cerrarDetalle contenedorSpanAviso"><i class="fas fa-times"></i><span class="spanAviso">Cerrar[Esc]</span></a>
+                <input type="text" id="tituloEventoEditar" placeholder="(Sin título)" autocomplete="off">
+                <div id="descripcionEventoEditar" contenteditable="true" aria-multiline="true" dir="ltr"></div>
+                <div class="contenedorOpcionesASeleccionar">
+                    <h3>Categorías</h3>
+                    <input type="text" class="inputOpcionSeleccionada" id="categoriaEventoEditar" value="Ninguna" disabled>
+                    <div class="opcionesASeleccionar" id="opcionesCategoriasEditar">
+                    </div>
+                </div>
+                <div class="contenedorFechasEditar">
+                    <div>
+                        <h3>Fecha</h3>
+                        <input type="date" id="fechaEventoEditar">
+                    </div>
+                    <div>
+                        <h3>Hora</h3>
+                        <input type="time" id="horaInicioEditar"> 
+                        -
+                        <input type="time" id="horaFinEditar">
+                        <div class="recordatorio contenedorSpanAviso">
+                            <span class="spanAviso">Recordatorio</span>
+                            <i id="recordatorioEventoEditar" class="far fa-bell"></i>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -199,24 +234,10 @@
     </main>
     <script src="scripts/Sortable.min.js"></script>
     <script src="scripts/notas.js"></script>
+    <script src="scripts/eventos.js"></script>
     <script src="scripts/index.js"></script>
     <script src="scripts/dragDrop.js"></script>
     <script src="scripts/calendario.js"></script>
 
 </body>
 </html>
-
-<!-- 
-
-ESTRUCTURA CARPETAS (FALTA LA OPCION DE EDITAR Y BORRAR)
-
-    <div class="carpeta"><i class="far fa-folder"></i><h4>Titulo de la carpeta</h4></div>
-    <div class="carpeta"><i class="far fa-folder"></i><h4>Titulo de la carpeta</h4></div>
-
-LAS CARPETAS VAN DENTRO DEL CONTENEDOR #contenedorCarpetas
-
-    <div id="contenedorCarpetas">
-    </div>
-
- -->
-

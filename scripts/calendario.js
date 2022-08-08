@@ -1,5 +1,5 @@
 
-const FECHA = new Date();
+const FECHA_CALENDARIO = new Date();
 
 const MES_CALENDARIO = document.querySelector('#mesCalendario')
 const ANIO_CALENDARIO = document.querySelector('#anioCalendario')
@@ -7,8 +7,8 @@ const DIAS_SEMANA = document.querySelectorAll('.calendarioDiasSemana span')
 const CALENDARIO = document.querySelector('.calendario')
 const CALENDARIO_DIAS_NUMERO = document.querySelector('#calendarioDiasNumero')
 
-let anio = FECHA.getFullYear()
-let numeroMes = FECHA.getMonth()
+let anio = FECHA_CALENDARIO.getFullYear()
+let numeroMes = FECHA_CALENDARIO.getMonth()
 let diasFeriados = []
 
 feriados()
@@ -20,8 +20,8 @@ CALENDARIO.onclick = ({target}) => {
             numeroMes = 11
             anio--
         }
-        if (anio < FECHA.getFullYear()) {
-            anio = FECHA.getFullYear()
+        if (anio < FECHA_CALENDARIO.getFullYear()) {
+            anio = FECHA_CALENDARIO.getFullYear()
             numeroMes = 0
         }
         actualizarCalendario(numeroMes, anio)
@@ -33,9 +33,14 @@ CALENDARIO.onclick = ({target}) => {
         }
         actualizarCalendario(numeroMes, anio)
     } else if (target.id == 'volverHoy'){
-        anio = FECHA.getFullYear()
-        numeroMes = FECHA.getMonth()
+        anio = FECHA_CALENDARIO.getFullYear()
+        numeroMes = FECHA_CALENDARIO.getMonth()
         actualizarCalendario(numeroMes, anio)
+        anioMostrarEvento = anio
+        mesMostrarEvento = numeroMes
+        diaMostrarEvento = FECHA_CALENDARIO.getDate()
+        fechaActualActualizar(anioMostrarEvento,mesMostrarEvento,diaMostrarEvento)
+        mostrarEventos()
     }
 }
 
@@ -57,18 +62,23 @@ function actualizarCalendario(mes, anio) {
         if (i == 1) {
             div.style.gridColumnStart = PRIMER_DIA_MES + 1
         }
-        if (i == FECHA.getDate() && mes == FECHA.getMonth() && anio == FECHA.getFullYear()) {
+        if (i == FECHA_CALENDARIO.getDate() && mes == FECHA_CALENDARIO.getMonth() && anio == FECHA_CALENDARIO.getFullYear()) {
             div.className = 'divDia diaActual'
         }
-        mostrarFeriados(i,mes,div)
         div.innerHTML += i
+        mostrarFeriados(i,mes,div)
         CALENDARIO_DIAS_NUMERO.append(div)
+        div.onclick = () =>{
+            anioMostrarEvento = anio
+            mesMostrarEvento = mes
+            diaMostrarEvento = i
+            fechaActualActualizar(anioMostrarEvento,mesMostrarEvento,diaMostrarEvento)
+            mostrarEventos()
+        }
     }
-
     MES_CALENDARIO.innerText = MES_LARGO
     ANIO_CALENDARIO.innerText =  anio
 }
-
 async function feriados(){
     let respuesta 
     try {
@@ -80,7 +90,6 @@ async function feriados(){
     }
 
 }
-
 function mostrarFeriados(i,m,d){
     diasFeriados.forEach(e => {
         if(i == e.dia && m == e.mes){
