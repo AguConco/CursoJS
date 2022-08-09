@@ -128,7 +128,6 @@ FORM_CREAR_EVENTO.onsubmit = e => {
         notificacion('El evento debe tener fecha y hora de cuando será')
     }else{
         let fechaActualizar = fechaEvento.split('-')
-        fechaMostrarEvento = fechaEvento
         fechaActualActualizar(parseInt(fechaActualizar[0]),parseInt((fechaActualizar[1]-1)),parseInt(fechaActualizar[2]))
     
         if(tituloEvento == ''){

@@ -252,6 +252,9 @@ function generarId(){
     return Math.random().toString(36).substr(2)  
 }
 function fechaActualActualizar(a,m,d){
+    anioMostrarEvento = a
+    mesMostrarEvento = m
+    diaMostrarEvento = d
     m++
     if(d < 10){
         d = '0'+d
